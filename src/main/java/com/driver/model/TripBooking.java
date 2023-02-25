@@ -35,11 +35,14 @@ public class TripBooking {
         this.driver = driver;
     }
 
-    public TripBooking(Customer customer, String fromLocation, String toLocation, int distanceInKm) {
-        this.customer = customer;
+    public TripBooking(String fromLocation, String toLocation, int distanceInKm, TripStatus status, int bill, Customer customer, Driver driver) {
         this.fromLocation = fromLocation;
         this.toLocation = toLocation;
         this.distanceInKm = distanceInKm;
+        this.status = status;
+        this.bill = bill;
+        this.customer = customer;
+        this.driver = driver;
     }
 
     public int getTripBookingId() {

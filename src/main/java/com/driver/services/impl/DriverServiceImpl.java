@@ -21,11 +21,10 @@ public class DriverServiceImpl implements DriverService {
 	@Override
 	public void register(String mobile, String password){
 		//Save a driver in the database having given details and a cab with ratePerKm as 10 and availability as True by default.
-		Driver driver = new Driver(mobile, password);
-		Cab cab = new Cab(10, true, password, driver);
-		driver.setCab(cab);
+		Cab cab = new Cab(10, true, password);
+		Driver driver = new Driver(mobile, password, cab);
+		cab.setDriver(driver);
 		driverRepository3.save(driver);
-		cabRepository3.save(cab);
 	}
 
 	@Override

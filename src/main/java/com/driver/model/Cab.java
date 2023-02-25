@@ -33,6 +33,12 @@ public class Cab {
         this.driver = driver;
     }
 
+    public Cab(int perKmRate, boolean available, String password) {
+        this.perKmRate = perKmRate;
+        this.available = available;
+        this.password = password;
+    }
+
     public int getId() {
         return id;
     }

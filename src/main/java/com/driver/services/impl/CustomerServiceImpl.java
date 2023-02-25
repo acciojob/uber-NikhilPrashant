@@ -1,17 +1,14 @@
 package com.driver.services.impl;
 
-import com.driver.model.TripBooking;
+import com.driver.model.*;
 import com.driver.services.CustomerService;
 import org.assertj.core.internal.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.driver.model.Customer;
-import com.driver.model.Driver;
 import com.driver.repository.CustomerRepository;
 import com.driver.repository.DriverRepository;
 import com.driver.repository.TripBookingRepository;
-import com.driver.model.TripStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +46,8 @@ public class CustomerServiceImpl implements CustomerService {
 		for (Driver driver: driverList) {
 			if (driver.getCab().getAvailable()) {
 				Customer customer = customerRepository2.findById(customerId).get();
-				TripBooking tripBooking = new TripBooking(customer, fromLocation, toLocation, distanceInKm);
+				TripBooking tripBooking = new TripBooking(fromLocation, toLocation, distanceInKm, TripStatus.CONFIRMED, 0, customer, driver);
+				tripBooking.getDriver().getCab().setAvailable(false);
 				tripBookingRepository2.save(tripBooking);
 				return tripBooking;
 			}
@@ -62,6 +60,7 @@ public class CustomerServiceImpl implements CustomerService {
 		//Cancel the trip having given trip Id and update TripBooking attributes accordingly
 		TripBooking tripBooking = tripBookingRepository2.findById(tripId).get();
 		tripBooking.setStatus(TripStatus.CANCELED);
+		tripBooking.getDriver().getCab().setAvailable(true);
 		tripBookingRepository2.save(tripBooking);
 
 	}
@@ -71,6 +70,9 @@ public class CustomerServiceImpl implements CustomerService {
 		//Complete the trip having given trip Id and update TripBooking attributes accordingly
 		TripBooking tripBooking = tripBookingRepository2.findById(tripId).get();
 		tripBooking.setStatus(TripStatus.COMPLETED);
+		Cab cab = tripBooking.getDriver().getCab();
+		tripBooking.setBill(cab.getPerKmRate() * tripBooking.getDistanceInKm());
+		tripBooking.getDriver().getCab().setAvailable(true);
 		tripBookingRepository2.save(tripBooking);
 	}
 }

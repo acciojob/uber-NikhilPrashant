@@ -34,6 +34,12 @@ public class Driver {
         this.password = password;
     }
 
+    public Driver(String mobile, String password, Cab cab) {
+        this.mobile = mobile;
+        this.password = password;
+        this.cab = cab;
+    }
+
     public int getDriverId() {
         return driverId;
     }

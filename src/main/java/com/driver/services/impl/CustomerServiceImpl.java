@@ -47,7 +47,7 @@ public class CustomerServiceImpl implements CustomerService {
 		//Avoid using SQL query
 		List<Driver> driverList = driverRepository2.findAll();
 		for (Driver driver: driverList) {
-			if (driver.getCab().isAvailable()) {
+			if (driver.getCab().getAvailable()) {
 				Customer customer = customerRepository2.findById(customerId).get();
 				TripBooking tripBooking = new TripBooking(customer, fromLocation, toLocation, distanceInKm);
 				tripBookingRepository2.save(tripBooking);
